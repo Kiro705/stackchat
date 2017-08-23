@@ -6,13 +6,13 @@ const initialState = {
 
 function reducer (state = initialState, action) {
     switch (action.type) {
-      case GOT_MESSAGES_FROM_SERVER: 
+      case GOT_MESSAGES_FROM_SERVER:
          return Object.assign({}, state, { messages: action.messages });
-      default: 
+      default:
          return state;
     }
   }
-  
+ 
 
 const GOT_MESSAGES_FROM_SERVER = 'GOT_MESSAGES_FROM_SERVER';
 
