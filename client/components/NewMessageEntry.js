@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import store, {writeMessage, gotNewMessageFromServer, sendMessage} from '../store';
-import axios from 'axios';
-import socket from '../socket.js'
+import store, {writeMessage, sendMessage} from '../store';
 
 export default class NewMessageEntry extends Component {
 
@@ -23,8 +21,6 @@ export default class NewMessageEntry extends Component {
   }
 
   handleChange (evt) {
-    console.log(this.props)
-    console.log(evt.target.value);
     store.dispatch(writeMessage(evt.target.value))
   }
 
@@ -32,7 +28,8 @@ export default class NewMessageEntry extends Component {
     evt.preventDefault();
     const content = this.state.newMessage;
     const channelId = this.props.channelId;
-    const thunk = sendMessage(content, channelId);
+    const name = this.state.username;
+    const thunk = sendMessage(content, channelId, name);
     store.dispatch(thunk);
 
   }

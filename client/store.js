@@ -6,7 +6,8 @@ import socket from './socket.js';
 
 const initialState = {
     messages: [],
-    newMessage: ''
+    newMessage: '',
+    username: ''
 };
 
 const WRITE_MESSAGE = 'WRITE_MESSAGE';
@@ -14,6 +15,8 @@ const WRITE_MESSAGE = 'WRITE_MESSAGE';
 const GOT_NEW_MESSAGE_FROM_SERVER = 'GOT_NEW_MESSAGE_FROM_SERVER';
 
 const GOT_MESSAGES_FROM_SERVER = 'GOT_MESSAGES_FROM_SERVER';
+
+const WRITE_USER = 'WRITE_USER';
 
 const store = createStore(reducer, applyMiddleware(loggerMiddleware, thunkMiddleware))
 
@@ -40,6 +43,13 @@ export const writeMessage = function(messageString){
     };
 };
 
+export const writeUser = function(userString){
+    return {
+        type: WRITE_USER,
+        newUserEntry: userString
+    };
+};
+
 export const fetchMessages = function(){
     return function thunk (dispatch) {
         return axios.get('/api/messages')
@@ -51,9 +61,9 @@ export const fetchMessages = function(){
       }
 }
 
-export const sendMessage = function(content, channelId){
+export const sendMessage = function(content, channelId, name){
     return function thunk (dispatch){
-        axios.post('/api/messages', { content: content, channelId: channelId })
+        axios.post('/api/messages', {content, channelId, name})
             .then(res => res.data)
             .then(message => {
             store.dispatch(gotNewMessageFromServer(message));
@@ -70,6 +80,8 @@ function reducer (state = initialState, action) {
          return Object.assign({}, state, { messages: state.messages.concat(action.message) });
       case WRITE_MESSAGE:
          return Object.assign({}, state, { newMessage: action.newMessageEntry });
+      case WRITE_USER:
+         return Object.assign({}, state, { username: action.newUserEntry });
       default:
          return state;
     }
