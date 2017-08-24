@@ -26,7 +26,6 @@ export default class ChannelList extends Component {
     this.unsubscribeFromStore = store.subscribe(() => {
       this.setState(store.getState())
     })
-    console.log(this.state);
   }
 
   componentWillUnmount () {
